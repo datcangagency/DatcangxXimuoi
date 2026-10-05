@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal Chiến Lược - Ốc Xí Muội | Mobile First</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF7E36',
+                            soft: '#FFF0E5',
+                            dark: '#2D3436',
+                            accent: '#FF6B6B',
+                            logo: '#E31E24'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Nunito', 'sans-serif'],
+                        body: ['Quicksand', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan': 'scan 1.5s linear infinite',
+                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        scan: {
+                            '0%': { top: '-100%' },
+                            '100%': { top: '100%' }
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Quicksand', sans-serif; background-color: #FAFAFA; scroll-behavior: smooth; }
+        h1, h2, h3 { font-family: 'Nunito', sans-serif; }
+        
+        .brand-highlight {
+            color: #FF7E36;
+            font-weight: 800;
+            text-shadow: 0 0 15px rgba(255, 126, 54, 0.2);
+            position: relative;
+            display: inline-block;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        .iphone-x {
+            position: relative;
+            margin: 0 auto;
+            width: 260px;
+            height: 540px;
+            background-color: #2D3436;
+            border-radius: 40px;
+            box-shadow: 0px 20px 50px rgba(0,0,0,0.2), 0px 0px 0px 4px #4a4a4a inset;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .iphone-x:hover { transform: scale(1.02); }
+        
+        .notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 25px;
+            width: 120px;
+            background-color: #2D3436;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            z-index: 20;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            position: relative;
+            overflow: hidden;
+            border-radius: 36px;
+        }
+
+        .screen img.bg-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+
+        .tiktok-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 30%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px 10px;
+            z-index: 10;
+        }
+
+        .right-actions {
+            position: absolute;
+            right: 8px;
+            bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .bottom-info {
+            margin-bottom: 20px;
+            margin-left: 8px;
+            max-width: 75%;
+        }
+
+        .comp-img-small {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 12px;
+            filter: grayscale(30%) brightness(0.9);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            cursor: zoom-in;
+        }
+        .comp-img-small:hover {
+            filter: grayscale(0%) brightness(1);
+            transform: scale(1.05);
+        }
+
+        .comp-img-large {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 4px solid white;
+        }
+
+        .fan-container {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .fan-card {
+            position: absolute;
+            width: 280px;
+            height: 400px;
+            left: 50%;
+            margin-left: -140px;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-origin: center bottom;
+        }
+        
+        .fan-card[data-pos="0"] {
+            z-index: 30;
+            transform: translateX(0) rotate(0deg) scale(1);
+        }
+        .fan-card[data-pos="1"] {
+            z-index: 20;
+            transform: translateX(40px) translateY(-5px) rotate(8deg) scale(0.95);
+            opacity: 0.9;
+        }
+        .fan-card[data-pos="2"] {
+            z-index: 10;
+            transform: translateX(80px) translateY(-10px) rotate(16deg) scale(0.9);
+            opacity: 0.7;
+        }
+
+        #lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            cursor: zoom-out;
+        }
+        #lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 8px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            animation: zoomIn 0.3s ease-out;
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .transformation-container {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 14px;
+        }
+        .transformation-img {
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+        }
+        .transformation-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4), transparent);
+            pointer-events: none;
+            display: none;
+        }
+        .is-transforming .transformation-overlay {
+            display: block;
+            animation: scan 0.8s linear forwards;
+        }
+
+        .swot-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        #optimal-section {
+            display: none;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #FF7E36; border-radius: 4px; }
+    </style>
+</head>
+<body class="text-brand-dark overflow-x-hidden selection:bg-brand-orange selection:text-white">
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" onclick="closeLightbox()">
+        <button class="absolute top-6 right-6 text-white text-3xl opacity-50 hover:opacity-100">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <img id="lightbox-img" src="" alt="Zoomed view">
+    </div>
+
+    <!-- Background patterns -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-orange-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float"></div>
+        <div class="absolute top-[20%] right-[-10%] w-[400px] h-[400px] bg-red-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float-delayed"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-md shadow-sm">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 flex items-center justify-center overflow-hidden rounded-lg">
+                    <img src="https://i.ibb.co/0jmnQvQS/logo.jpg" alt="Đất Cảng Logo" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <span class="font-heading font-bold text-lg leading-tight block text-brand-logo">ĐẤT CẢNG</span>
+                    <span class="text-xs text-gray-500 font-bold tracking-widest uppercase">Agency</span>
+                </div>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-8">
+                <!-- Chữ "Trang chủ" đã được sửa thành "Tổng quan" -->
+                <a href="#" class="text-sm font-bold hover:text-brand-orange transition-colors">Tổng quan</a>
+                <a href="#analysis" class="text-sm font-bold hover:text-brand-orange transition-colors">Tại sao thay đổi?</a>
+                <a href="#solutions" class="text-sm font-bold hover:text-brand-orange transition-colors">Giải pháp</a>
+                <a href="#swot" class="text-sm font-bold hover:text-brand-orange transition-colors">SWOT</a>
+                <a href="#budget" class="text-sm font-bold hover:text-brand-orange transition-colors">Báo giá</a>
+            </div>
+
+            <div class="md:hidden text-brand-dark text-2xl">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen pt-28 pb-12 flex items-center">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
+                <div class="md:w-1/2 space-y-6">
+                    <div class="inline-flex items-center gap-2 bg-orange-100 text-brand-orange px-4 py-1.5 rounded-full text-sm font-bold animate-pulse-slow">
+                        <i class="fa-solid fa-fire"></i> Đề Xuất chiến lược 2026
+                    </div>
+                    <h1 class="text-5xl lg:text-7xl font-extrabold leading-tight">
+                        Chạm Vào <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-brand-accent">Cảm Xúc</span> <br>
+                        Khách Hàng
+                    </h1>
+                    <p class="text-xl text-gray-500 font-medium max-w-lg">
+                        Biến <span class="brand-highlight">Ốc Xí Muội</span> thành điểm đến "Must-Try" tại Hồ Sen thông qua chiến lược hình ảnh & video ngắn chuẩn Viral.
+                    </p>
+                    <div class="flex gap-4 pt-4">
+                        <a href="#solutions" class="bg-brand-orange text-white px-8 py-3.5 rounded-full font-bold shadow-xl shadow-orange-200 hover:bg-orange-600 transition flex items-center gap-2">
+                            Xem Giải Pháp <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- TikTok Phone Mockup -->
+                <div class="md:w-1/2 flex justify-center relative">
+                    <div class="iphone-x transform rotate-[-5deg] hover:rotate-0 transition duration-500 shadow-2xl">
+                        <div class="notch"></div>
+                        <div class="screen">
+                            <img src="https://i.ibb.co/5xTGCHwV/ngheu-xao-cay-vietnam-food-stylist.jpg" class="bg-video" alt="Nghêu xào cay">
+                            <div class="tiktok-overlay">
+                                <div class="w-full flex justify-center pt-8 text-white/90 text-sm font-bold">
+                                    <span>Đang Follow</span> <span class="mx-2 text-white/40">|</span> <span class="text-white border-b-2 border-white pb-1">Dành Cho Bạn</span>
+                                </div>
+                                <div>
+                                    <div class="right-actions">
+                                        <div class="action-btn">
+                                            <div class="w-10 h-10 rounded-full border border-white p-0.5">
+                                                <img src="https://ui-avatars.com/api/?name=O+X&background=random" class="rounded-full w-full h-full">
+                                            </div>
+                                            <i class="fa-solid fa-circle-plus text-brand-accent bg-white rounded-full text-xs absolute bottom-[-5px]"></i>
+                                        </div>
+                                        <div class="action-btn">
+                                            <i class="fa-solid fa-heart text-3xl text-brand-accent drop-shadow-md"></i>
+                                            <span class="text-xs font-bold">12.5K</span>
+                                        </div>
+                                        <div class="action-btn">
+                                            <i class="fa-solid fa-comment-dots text-3xl drop-shadow-md"></i>
+                                            <span class="text-xs font-bold">842</span>
+                                        </div>
+                                        <div class="action-btn">
+                                            <i class="fa-solid fa-share text-3xl drop-shadow-md"></i>
+                                            <span class="text-xs font-bold">Chia sẻ</span>
+                                        </div>
+                                    </div>
+                                    <div class="bottom-info drop-shadow-md">
+                                        <h4 class="font-bold mb-1 text-lg">@ocximuoihp</h4>
+                                        <p class="text-sm leading-snug">Chua chua cay cay, ngất ngây con gà tây! 🤤 <span class="font-extrabold text-brand-orange">Ốc Xí Muội</span> sốt me ngon nhức nách... #AnSapHaiPhong</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analysis Section -->
+    <section id="analysis" class="py-24 bg-white scroll-mt-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-extrabold mb-4">Tại Sao Phải Thay Đổi Hình Ảnh?</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">Sự khác biệt rõ rệt giữa việc "chụp cho có" và việc "đầu tư nghệ thuật" sẽ quyết định khách hàng có dừng chân tại quán.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-12 items-start">
+                <!-- Left: Competitors -->
+                <div class="lg:col-span-5 space-y-10">
+                    <div class="inline-flex items-center gap-2 text-gray-400 font-bold uppercase tracking-widest text-xs mb-2">
+                        <i class="fa-solid fa-xmark-circle"></i> Hình ảnh thực tế đối thủ
+                    </div>
+                    
+                    <div class="bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
+                        <h4 class="text-sm font-bold text-gray-600 mb-4 flex items-center gap-2">
+                            <span class="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center text-[10px]">01</span>
+                            Ốc Đêm
+                        </h4>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="aspect-square overflow-hidden rounded-xl bg-gray-200">
+                                <img src="https://i.ibb.co/gbb8DPPy/625121974-122157323438644458-3457966874135598987-n.jpg" class="comp-img-small h-full" alt="Đối thủ 1-1" onclick="openLightbox(this.src)">
+                            </div>
+                            <div class="aspect-square overflow-hidden rounded-xl bg-gray-200">
+                                <img src="https://i.ibb.co/MDwd5BZ5/624503689-122157323360644458-2652968995192447532-n.jpg" class="comp-img-small h-full" alt="Đối thủ 1-2" onclick="openLightbox(this.src)">
+                            </div>
+                            <div class="aspect-square overflow-hidden rounded-xl bg-gray-200">
+                                <img src="https://i.ibb.co/ccyRFDfD/624461534-122157323402644458-6040245861847011882-n.jpg" class="comp-img-small h-full" alt="Đối thủ 1-3" onclick="openLightbox(this.src)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
+                        <h4 class="text-sm font-bold text-gray-600 mb-4 flex items-center gap-2">
+                            <span class="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center text-[10px]">02</span>
+                            Ốc Thủy Dương
+                        </h4>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="aspect-square overflow-hidden rounded-xl bg-gray-200">
+                                <img src="https://i.ibb.co/ymmdsCt1/615826282-122238433520125429-4623764328797926041-n.jpg" class="comp-img-small h-full" alt="Đối thủ 2-1" onclick="openLightbox(this.src)">
+                            </div>
+                            <div class="aspect-square overflow-hidden rounded-xl bg-gray-200">
+                                <img src="https://i.ibb.co/gFTmHb0Y/616843434-122238433532125429-4058756972291325184-n.jpg" class="comp-img-small h-full" alt="Đối thủ 2-2" onclick="openLightbox(this.src)">
+                            </div>
+                            <div class="aspect-square overflow-hidden rounded-xl bg-gray-200">
+                                <img src="https://i.ibb.co/fdVVHndn/615791755-122238433526125429-2034225722166733237-n.jpg" class="comp-img-small h-full" alt="Đối thủ 2-3" onclick="openLightbox(this.src)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-red-50 rounded-2xl border border-red-100 italic text-xs text-red-400 flex items-start gap-3">
+                        <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+                        <span>Nhận xét: Hình ảnh mờ, bố cục lộn xộn, không tạo được cảm giác thèm ăn.</span>
+                    </div>
+                </div>
+
+                <!-- Right: Our Standards -->
+                <div class="lg:col-span-7 lg:pl-8">
+                    <div class="inline-flex items-center gap-2 text-brand-orange font-bold uppercase tracking-widest text-xs mb-6">
+                        <i class="fa-solid fa-check-circle"></i> Tiêu chuẩn hình ảnh mới (Click để chuyển)
+                    </div>
+
+                    <div class="space-y-6">
+                        <div id="fan-gallery" class="fan-container" onclick="rotateCards()">
+                            <div class="fan-card shadow-2xl" data-pos="0">
+                                <img src="https://i.ibb.co/cXQTWwHQ/caramelized-pork-with-quail-egg-and-tofu-vietnam-food-stylist.jpg" class="comp-img-large" alt="Ốc Xí Muội Concept 1">
+                                <div class="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs font-bold text-brand-orange uppercase">Macro Shot Concept</p>
+                                    <p class="text-[10px] text-gray-500">Lấy nét chi tiết, khơi gợi vị giác tức thì.</p>
+                                </div>
+                            </div>
+                            <div class="fan-card shadow-2xl" data-pos="1">
+                                <img src="https://i.ibb.co/CKSCGyCV/image-6.jpg" class="comp-img-large" alt="Ốc Xí Muội Concept 2">
+                                <div class="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs font-bold text-brand-orange uppercase">Mood Lighting</p>
+                                    <p class="text-[10px] text-gray-500">Ánh sáng ấm cúng, sang trọng và chuyên nghiệp.</p>
+                                </div>
+                            </div>
+                            <div class="fan-card shadow-2xl" data-pos="2">
+                                <img src="https://i.ibb.co/BVXFN4vX/bo-nuong-vietnam-food-stylist.jpg" class="comp-img-large" alt="Ốc Xí Muội Concept 3">
+                                <div class="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs font-bold text-brand-orange uppercase">Food Arrangement</p>
+                                    <p class="text-[10px] text-gray-500">Bố cục sắp xếp nghệ thuật, nâng tầm giá trị món ăn.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-6 bg-orange-50 rounded-3xl border border-orange-100">
+                            <h5 class="font-bold text-brand-orange mb-2">Định vị cho <span class="brand-highlight text-sm">Ốc Xí Muội</span>:</h5>
+                            <ul class="text-sm space-y-2 text-gray-600">
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-star text-brand-orange mt-1"></i> Sử dụng ánh sáng studio chuyên nghiệp.</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-star text-brand-orange mt-1"></i> Góc chụp Macro mang lại cảm giác "đang thưởng thức".</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-star text-brand-orange mt-1"></i> Màu sắc kích thích vị giác tối đa.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategy Section -->
+    <section id="solutions" class="py-20 bg-brand-soft/30 scroll-mt-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-12 text-brand-dark">Kế Hoạch Video TikTok, Reels Facebook, ...</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- 1. Trend Biến Hình -->
+                <div class="glass-card rounded-3xl p-6 hover:shadow-xl transition group" onclick="triggerTransformation(this)">
+                    <h3 class="font-bold text-xl mb-2 flex items-center justify-between">
+                        1. Trend Biến Hình
+                        <span class="text-[10px] bg-brand-orange text-white px-2 py-0.5 rounded-full animate-pulse">Click xem</span>
+                    </h3>
+                    <div class="bg-gray-900 rounded-[20px] p-2 aspect-[9/16] relative overflow-hidden mt-4 transformation-container">
+                        <img id="transform-img" src="https://i.ibb.co/DfJmh0dG/ca-kho-man-vietnam-food-stylist-1.jpg" 
+                             data-alt-src="https://i.ibb.co/zVPr66YV/ca-kho-man-vietnam-food-stylist.jpg"
+                             data-orig-src="https://i.ibb.co/DfJmh0dG/ca-kho-man-vietnam-food-stylist-1.jpg"
+                             class="w-full h-full object-cover rounded-[14px] opacity-70 transformation-img">
+                        <div class="transformation-overlay"></div>
+                        
+                        <!-- Interactivity UI -->
+                        <div class="absolute inset-0 flex flex-col justify-between p-3 pointer-events-none">
+                            <div class="flex justify-center pt-2">
+                                <span class="text-white/80 text-[10px] font-bold border-b border-white">Trending</span>
+                            </div>
+                            <div class="flex justify-between items-end pb-2">
+                                <div class="text-white space-y-1">
+                                    <p class="font-bold text-sm">@ocximuoihp</p>
+                                    <p class="text-[10px] opacity-90">Phép màu nhà bếp... ✨ #trending</p>
+                                </div>
+                                <div class="flex flex-col gap-3 items-center">
+                                    <div class="flex flex-col items-center">
+                                        <i class="fa-solid fa-heart text-white text-xl"></i>
+                                        <span class="text-[9px] text-white font-bold">45.2K</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <i class="fa-solid fa-comment-dots text-white text-xl"></i>
+                                        <span class="text-[9px] text-white font-bold">1.2K</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <i class="fa-solid fa-share text-white text-xl"></i>
+                                        <span class="text-[9px] text-white font-bold">8.5K</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-play text-white/50 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl group-hover:scale-110 transition duration-300"></i>
+                    </div>
+                    <p class="mt-4 text-xs text-gray-500 italic">Hiệu ứng: Chuyển đổi từ nguyên liệu thô sang món ăn hoàn chỉnh cực hút mắt.</p>
+                </div>
+
+                <!-- 2. FOMO Đám Đông -->
+                <div class="glass-card rounded-3xl p-6 hover:shadow-xl transition group">
+                    <h3 class="font-bold text-xl mb-2">2. FOMO Đám Đông</h3>
+                    <div class="bg-gray-900 rounded-[20px] p-2 aspect-[9/16] relative overflow-hidden mt-4">
+                        <img src="https://i.ibb.co/1fczCNgX/615147868-122237736962125429-2103425811712223795-n.jpg" class="w-full h-full object-cover rounded-[14px] opacity-70">
+                        
+                        <div class="absolute inset-0 flex flex-col justify-between p-3 pointer-events-none">
+                            <div class="flex justify-center pt-2">
+                                <span class="text-white/80 text-[10px] font-bold border-b border-white">Live</span>
+                            </div>
+                            <div class="flex justify-between items-end pb-2">
+                                <div class="text-white space-y-1">
+                                    <p class="font-bold text-sm">@ocximuoihp</p>
+                                    <p class="text-[10px] opacity-90">Cuối tuần không còn chỗ trống! 😱 #haiphong</p>
+                                </div>
+                                <div class="flex flex-col gap-3 items-center">
+                                    <div class="flex flex-col items-center">
+                                        <i class="fa-solid fa-heart text-white text-xl"></i>
+                                        <span class="text-[9px] text-white font-bold">128K</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <i class="fa-solid fa-comment-dots text-white text-xl"></i>
+                                        <span class="text-[9px] text-white font-bold">3.4K</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <i class="fa-solid fa-share text-white text-xl"></i>
+                                        <span class="text-[9px] text-white font-bold">15K</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-play text-white/50 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl group-hover:scale-110 transition duration-300"></i>
+                    </div>
+                    <p class="mt-4 text-xs text-gray-500 italic">Nội dung: Quay cảnh quán tấp nập khách, không khí sôi động để kích thích tâm lý tò mò.</p>
+                </div>
+
+                <!-- 3. ASMR Cận Cảnh -->
+                <div class="glass-card rounded-3xl p-6 hover:shadow-xl transition group">
+                    <h3 class="font-bold text-xl mb-2">3. ASMR Cận Cảnh</h3>
+                    <div class="bg-gray-900 rounded-[20px] p-2 aspect-[9/16] relative overflow-hidden mt-4">
+                        <img src="https://i.ibb.co/5xTGCHwV/ngheu-xao-cay-vietnam-food-stylist.jpg" class="w-full h-full object-cover rounded-[14px] opacity-70">
+                        
+                        <div class="absolute inset-0 flex flex-col justify-between p-3 pointer-events-none">
+                            <div class="flex justify-center pt-2">
+                                <span class="text-white/80 text-[10px] font-bold border-b border-white">Detail</span>
+                            </div>
+                            <div class="flex justify-between items-end pb-2">
+                                <div class="text-white space-y-1">
+                                    <p class="font-bold text-sm">@ocximuoihp</p>
+                                    <p class="text-[10px] opacity-90">Nghe tiếng là thấy đói rồi... 🤤 #asmr</p>
+                                </div>
+                                <div class="flex flex-col gap-3 items-center">
+                                    <div class="flex flex-col items-center">
+                                        <i class="fa-solid fa-heart text-white text-xl"></i>
+                                        <span class="text-[9px] text-white font-bold">89K</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <i class="fa-solid fa-comment-dots text-white text-xl"></i>
+                                        <span class="text-[9px] text-white font-bold">900</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <i class="fa-solid fa-share text-white text-xl"></i>
+                                        <span class="text-[9px] text-white font-bold">4.2K</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-play text-white/50 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl group-hover:scale-110 transition duration-300"></i>
+                    </div>
+                    <p class="mt-4 text-xs text-gray-500 italic">Âm thanh: Tiếng xào nấu, tiếng ốc va chạm và cảm xúc thật của khách khi ăn.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SWOT Section -->
+    <section id="swot" class="py-24 bg-white scroll-mt-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-extrabold mb-4">Phân Tích SWOT - Ốc Xí Muội</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">Cái nhìn tổng quan về nội tại thương hiệu và môi trường kinh doanh tại khu vực Hồ Sen.</p>
+            </div>
+
+            <div class="swot-grid max-w-5xl mx-auto">
+                <div class="bg-green-50 rounded-3xl p-8 border border-green-100 hover:shadow-lg transition-all transform hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-green-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-green-200">
+                        <i class="fa-solid fa-bolt text-xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-green-700 mb-4 uppercase tracking-wide">Điểm Mạnh (Strengths)</h4>
+                    <ul class="space-y-3 text-green-900/80 text-sm font-medium">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check mt-1"></i> Món ăn phong phú, ngon, giá thành hợp lý</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check mt-1"></i> Một số món độc quyền</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check mt-1"></i> Hương vị "Xí muội" độc đáo, khó sao chép</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check mt-1"></i> Vị trí tạm coi là đẹp</li>
+                    </ul>
+                </div>
+
+                <div class="bg-red-50 rounded-3xl p-8 border border-red-100 hover:shadow-lg transition-all transform hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-red-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-red-200">
+                        <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-red-700 mb-4 uppercase tracking-wide">Điểm Yếu (Weaknesses)</h4>
+                    <ul class="space-y-3 text-red-900/80 text-sm font-medium">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-xmark mt-1"></i> Hình ảnh truyền thông chưa xứng tầm chất lượng món ăn.</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-xmark mt-1"></i> Thiếu hụt nội dung Video ngắn theo xu hướng.</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-xmark mt-1"></i> Nhận diện thương hiệu online mờ nhạt hơn đối thủ.</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-xmark mt-1"></i> Không gian quán chưa được khai thác để khách "check-in".</li>
+                    </ul>
+                </div>
+
+                <div class="bg-blue-50 rounded-3xl p-8 border border-blue-100 hover:shadow-lg transition-all transform hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-blue-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-blue-200">
+                        <i class="fa-solid fa-rocket text-xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-blue-700 mb-4 uppercase tracking-wide">Cơ Hội (Opportunities)</h4>
+                    <ul class="space-y-3 text-blue-900/80 text-sm font-medium">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-arrow-trend-up mt-1"></i> Xu hướng food tour Hải Phòng vẫn đang rất mạnh mẽ</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-arrow-trend-up mt-1"></i> Khách hàng Gen Z rất ưa chuộng các quán độc đáo</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-arrow-trend-up mt-1"></i> Các nền tảng video ngắn (Tiktok, Reels Facebook, Short Youtube) đang ưu tiên nội dung ẩm thực địa phương</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-arrow-trend-up mt-1"></i> Khả năng mở rộng tệp khách hàng ngoại tỉnh</li>
+                    </ul>
+                </div>
+
+                <div class="bg-amber-50 rounded-3xl p-8 border border-amber-100 hover:shadow-lg transition-all transform hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-amber-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-amber-200">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-amber-700 mb-4 uppercase tracking-wide">Thách Thức (Threats)</h4>
+                    <ul class="space-y-3 text-amber-900/80 text-sm font-medium">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-bolt-lightning mt-1"></i> Cạnh tranh gay gắt từ các đối thủ</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-bolt-lightning mt-1"></i> Đối thủ đầu tư rất mạnh, nguồn lực dồi dào</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-bolt-lightning mt-1"></i> Ngành F&B khó khăn chung</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-bolt-lightning mt-1"></i> Các nền tảng thay đổi thuật toán phân phối</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Budget Section -->
+    <section id="budget" class="py-24 bg-brand-soft/50 scroll-mt-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <div class="inline-block px-4 py-1 bg-brand-orange/10 text-brand-orange rounded-full text-xs font-bold uppercase tracking-widest mb-4">Investment Plan</div>
+                <h2 class="text-3xl font-extrabold mb-4">Dự Trù Ngân Sách Đầu Tư</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">Chi phí tối ưu cho một chiến dịch truyền thông toàn diện và bền vững.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-white rounded-[40px] shadow-2xl shadow-orange-100 overflow-hidden border border-orange-50">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-brand-dark text-white">
+                                <th class="px-8 py-6 text-left text-sm font-bold uppercase tracking-wider">Hạng Mục Triển Khai</th>
+                                <th class="px-8 py-6 text-right text-sm font-bold uppercase tracking-wider">Ngân Sách (VNĐ)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr class="hover:bg-orange-50/30 transition">
+                                <td class="px-8 py-6">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-brand-orange">
+                                            <i class="fa-solid fa-camera"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-gray-800">Chụp bộ ảnh nghệ thuật Concept</p>
+                                            <p class="text-xs text-gray-400 font-medium">Gói 1 lần (Định hình phong cách thương hiệu)</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-6 text-right">
+                                    <span class="text-sm text-gray-300 line-through mr-2">10.000.000đ</span>
+                                    <span class="text-lg font-extrabold text-brand-orange">5.000.000đ</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-orange-50/30 transition">
+                                <td class="px-8 py-6">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-brand-orange">
+                                            <i class="fa-solid fa-clapperboard"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-gray-800">Sản xuất Video Viral (TikTok/Reels)</p>
+                                            <p class="text-xs text-gray-400 font-medium">Số lượng: 15 Video / tháng</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-6 text-right">
+                                    <span class="text-lg font-extrabold text-brand-dark">12.500.000đ</span>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase mt-1 tracking-tighter">Hàng tháng</p>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-orange-50/30 transition">
+                                <td class="px-8 py-6">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-brand-orange">
+                                            <i class="fa-brands fa-facebook"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-gray-800">Quản trị & Chăm sóc Fanpage</p>
+                                            <p class="text-xs text-gray-400 font-medium">Tương tác khách hàng, bài viết nội dung hàng ngày</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-6 text-right">
+                                    <span class="text-lg font-extrabold text-brand-dark">6.500.000đ</span>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase mt-1 tracking-tighter">Hàng tháng</p>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-orange-50/30 transition">
+                                <td class="px-8 py-6">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-brand-orange">
+                                            <i class="fa-brands fa-tiktok"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-gray-800">Quản lý kênh Tiktok</p>
+                                            <p class="text-xs text-gray-400 font-medium">Đăng tải, theo dõi xu hướng & tối ưu hóa tìm kiếm</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-6 text-right">
+                                    <span class="text-lg font-extrabold text-brand-dark">3.000.000đ</span>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase mt-1 tracking-tighter">Hàng tháng</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="bg-orange-50/50 border-b border-gray-100">
+                                <td class="px-8 py-10">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                                        <span class="font-extrabold text-gray-800 uppercase tracking-wider text-sm">Tổng cộng duy trì tháng</span>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-10 text-right">
+                                    <div class="text-3xl font-black text-brand-dark">27.000.000đ</div>
+                                    <p class="text-xs text-gray-400 font-medium mt-1 italic">(*) Chưa bao gồm phí Chụp ảnh, Ads & Booking</p>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Action Button Area -->
+            <div class="flex justify-center mt-12">
+                <button id="btn-optimal" onclick="toggleOptimalSection()" class="bg-brand-dark text-white hover:bg-black px-10 py-4 rounded-full font-black text-lg shadow-xl hover:shadow-2xl transition-all flex items-center gap-3 group">
+                    PHƯƠNG ÁN TỐI ƯU 
+                    <i class="fa-solid fa-chevron-down group-hover:translate-y-1 transition-transform"></i>
+                </button>
+            </div>
+
+            <!-- Optimal Section (Hidden by default) -->
+            <div id="optimal-section" class="max-w-4xl mx-auto mt-12 animate-fade-in-up">
+                <div class="bg-gradient-to-br from-brand-orange to-brand-accent rounded-[40px] p-1 shadow-2xl">
+                    <div class="bg-white rounded-[38px] p-8 md:p-12 overflow-hidden relative">
+                        <!-- Decorative bg -->
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-orange-50 rounded-full -mr-20 -mt-20 opacity-50"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-8 border-b border-orange-100">
+                                <div>
+                                    <h3 class="text-2xl md:text-3xl font-black text-brand-dark mb-2">Phân bổ ngân sách tối ưu</h3>
+                                    <p class="text-gray-500 font-bold">Gói đẩy mạnh nhận diện nhanh với chi phí thấp nhất</p>
+                                </div>
+                                <div class="bg-brand-soft px-8 py-4 rounded-3xl border-2 border-brand-orange/20 text-center">
+                                    <span class="block text-xs font-bold text-brand-orange uppercase tracking-widest mb-1">Trọn gói chỉ</span>
+                                    <span class="text-3xl font-black text-brand-orange">12.000.000đ</span>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div class="space-y-6">
+                                    <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-orange-50 transition-colors">
+                                        <div class="w-12 h-12 bg-orange-100 rounded-xl flex-shrink-0 flex items-center justify-center text-brand-orange">
+                                            <i class="fa-solid fa-camera-retro text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-extrabold text-brand-dark mb-1">Chụp ảnh nghệ thuật</h4>
+                                            <p class="text-sm text-gray-500 font-medium">Bàn giao trọn gói bộ ảnh Concept chuyên nghiệp để làm tư liệu truyền thông.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-orange-50 transition-colors">
+                                        <div class="w-12 h-12 bg-orange-100 rounded-xl flex-shrink-0 flex items-center justify-center text-brand-orange">
+                                            <i class="fa-solid fa-user-gear text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-extrabold text-brand-dark mb-1">Quản trị Fanpage</h4>
+                                            <p class="text-sm text-gray-500 font-medium">Lên nội dung hàng ngày, phản hồi khách hàng (Trọn gói tháng).</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-6">
+                                    <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-orange-50 transition-colors">
+                                        <div class="w-12 h-12 bg-orange-100 rounded-xl flex-shrink-0 flex items-center justify-center text-brand-orange">
+                                            <i class="fa-solid fa-video text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-extrabold text-brand-dark mb-1">Sản xuất 05 Video</h4>
+                                            <p class="text-sm text-gray-500 font-medium">Trọn gói quay dựng video ngắn chuẩn xu hướng cho TikTok/Reels.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-orange-50 transition-colors">
+                                        <div class="w-12 h-12 bg-orange-100 rounded-xl flex-shrink-0 flex items-center justify-center text-brand-orange">
+                                            <i class="fa-solid fa-bullhorn text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-extrabold text-brand-dark mb-1">Chạy quảng cáo (Ads)</h4>
+                                            <p class="text-sm text-gray-500 font-medium">Thiết lập và tối ưu chiến dịch tùy theo từng giai đoạn kinh doanh.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-12 p-6 bg-brand-dark rounded-3xl text-white flex items-center gap-6">
+                                <div class="w-12 h-12 bg-brand-orange rounded-full flex items-center justify-center flex-shrink-0 animate-pulse">
+                                    <i class="fa-solid fa-lightbulb"></i>
+                                </div>
+                                <p class="font-bold text-sm">Phù hợp nhất để bắt đầu làm mới hình ảnh mà vẫn kiểm soát tốt chi phí đầu tư ban đầu.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-center mt-8 text-xs text-gray-400 italic">Giá trên đã bao gồm toàn bộ thiết bị, nhân sự thực hiện và chỉnh sửa hậu kỳ.</p>
+        </div>
+    </section>
+
+    <footer class="py-10 border-t border-gray-100">
+        <div class="container mx-auto px-6 text-center text-gray-400 text-xs font-bold uppercase tracking-widest">
+            &copy; 2024 <span class="text-brand-logo">Đất Cảng Agency</span>
+        </div>
+    </footer>
+
+    <script>
+        function toggleOptimalSection() {
+            const section = document.getElementById('optimal-section');
+            const btn = document.getElementById('btn-optimal');
+            const icon = btn.querySelector('i');
+
+            if (section.style.display === 'block') {
+                section.style.display = 'none';
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                section.style.display = 'block';
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+                
+                // Smooth scroll to section
+                setTimeout(() => {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+
+        function rotateCards() {
+            const cards = document.querySelectorAll('.fan-card');
+            cards.forEach(card => {
+                let currentPos = parseInt(card.getAttribute('data-pos'));
+                let nextPos = (currentPos + 1) % cards.length;
+                card.setAttribute('data-pos', nextPos);
+            });
+        }
+
+        let isTransformed = false;
+        function triggerTransformation(cardElement) {
+            const img = cardElement.querySelector('#transform-img');
+            const container = cardElement.querySelector('.transformation-container');
+            
+            container.classList.add('is-transforming');
+            
+            setTimeout(() => {
+                if (!isTransformed) {
+                    img.src = img.getAttribute('data-alt-src');
+                    img.style.opacity = "1";
+                    isTransformed = true;
+                } else {
+                    img.src = img.getAttribute('data-orig-src');
+                    img.style.opacity = "0.7";
+                    isTransformed = false;
+                }
+            }, 400);
+
+            setTimeout(() => {
+                container.classList.remove('is-transforming');
+            }, 800);
+        }
+
+        function openLightbox(src) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto'; 
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    </script>
+</body>
+</html>
